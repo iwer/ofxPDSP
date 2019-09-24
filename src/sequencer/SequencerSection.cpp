@@ -303,10 +303,10 @@ void pdsp::SequencerSection::onSchedule() noexcept{
     if( patternIndex >=0 && patterns[patternIndex].sequence!=nullptr){ //if there is a pattern, execute it's generative routine
         if(reset) patterns[patternIndex].sequence->resetCount();
         
-        patterns[patternIndex].sequence->executeGenerateScore( );
+        patterns[patternIndex].sequence->executeGenerateScore();
         
         atomic_meter_current.store(patternIndex);
-        atomic_meter_length.store(patterns[patternIndex].sequence->length());
+        atomic_meter_length.store(patterns[patternIndex].sequence->bars);
      
         if(patterns[patternIndex].nextCell!=nullptr){ //we have a behavior to get next pattern
             scheduledPattern = patterns[patternIndex].nextCell->getNextPattern(patternIndex, (int) patterns.size());
@@ -322,15 +322,15 @@ void pdsp::SequencerSection::onSchedule() noexcept{
                     int rounded = static_cast<int> ( timeToQuantize /  patterns[patternIndex].quantizeGrid ); 
                     scheduledTime = static_cast<double>(rounded) * patterns[patternIndex].quantizeGrid ;
                 }else{
-                    scheduledTime = scheduledTime + patterns[patternIndex].sequence->length(); //+ patterns[scheduledPattern].quantizeGrid;
+                    scheduledTime = scheduledTime + patterns[patternIndex].sequence->bars; //+ patterns[scheduledPattern].quantizeGrid;
                 }                
             }else{
-                scheduledTime = scheduledTime + patterns[patternIndex].sequence->length(); 
+                scheduledTime = scheduledTime + patterns[patternIndex].sequence->bars; 
             }
             
         }else{ //we don't have a behavior to get a next pattern --------> STOPPING ROW AFTER EXECUTION
             atomic_meter_next.store(-1);        
-            scheduledTime = scheduledTime + patterns[patternIndex].sequence->length();
+            scheduledTime = scheduledTime + patterns[patternIndex].sequence->bars;
             scheduledPattern = -1;
         }   
               
@@ -378,7 +378,7 @@ void pdsp::SequencerSection::processBuffersDestinations(const int &bufferSize) n
 void pdsp::SequencerSection::setOutputsNumber(int size){
     if( size > (int) outputs.size()){
         int oldSize = outputs.size();
-        outputs.resize(size);        
+        outputs.resize(size);
         for(int i=oldSize; i<size; ++i){
             outputs[i] = new MessageBuffer();
         }        
@@ -387,7 +387,10 @@ void pdsp::SequencerSection::setOutputsNumber(int size){
 
 
 pdsp::MessageBuffer& pdsp::SequencerSection::out_message( int index ){
-    if(index<0) index = 0;
+    if(index<0){ 
+        std::cout<<"[pdsp] score section output index less than zero\n";
+        pdsp_trace();
+    }
 
     setOutputsNumber(index+1); // make the array larger if needed
     return *outputs[index];
@@ -400,7 +403,10 @@ pdsp::MessageBuffer& pdsp::SequencerSection::out( int index ){
 
 pdsp::SequencerGateOutput& pdsp::SequencerSection::out_trig( int index ){
     
-    if(index<0){ index = 0; }
+    if(index<0){ 
+        std::cout<<"[pdsp] score section output index less than zero\n";
+        pdsp_trace();
+    }
     
     if(index < (int) values.size()){
         if(values[index]!=nullptr){
@@ -417,7 +423,7 @@ pdsp::SequencerGateOutput& pdsp::SequencerSection::out_trig( int index ){
             gates[i] = nullptr;
         }
     }
-    
+            
     if(gates[index]==nullptr){
         gates[index] = new SequencerGateOutput();
         setOutputsNumber(index+1);
@@ -430,7 +436,10 @@ pdsp::SequencerGateOutput& pdsp::SequencerSection::out_trig( int index ){
 
 pdsp::SequencerValueOutput& pdsp::SequencerSection::out_value( int index ){
     
-    if(index<0){ index = 0; }
+    if(index<0){ 
+        std::cout<<"[pdsp] score section output index less than zero\n";
+        pdsp_trace();
+    }
     
     if(index < (int) gates.size()){
         if(gates[index]!=nullptr){
@@ -447,7 +456,7 @@ pdsp::SequencerValueOutput& pdsp::SequencerSection::out_value( int index ){
             values[i] = nullptr;
         }
     }
-    
+
     if(values[index]==nullptr){
         values[index] = new SequencerValueOutput();
         setOutputsNumber(index+1);
