@@ -3,8 +3,8 @@
 #define OFXPDSP_SCORESECTION_PLOTTER_H_INCLUDED
 
 #include "ofMain.h"
-#include "../sequencer/SequencerSection.h"
-#include "../sequencer/Sequence.h"
+#include "sequencer/SequencerSection.h"
+#include "sequencer/Sequence.h"
 
 /*!
 @brief utility class to display a score section active sequence and its output values

@@ -3,9 +3,9 @@
 #define OFXPDSP_ENGINEGRAPHICS_H_INCLUDED
 
 #include "ofMain.h"
-#include "../sequencer/SequencerSection.h"
-#include "../sequencer/SequencerProcessor.h"
-#include "../sequencer/Sequence.h"
+#include "sequencer/SequencerSection.h"
+#include "sequencer/SequencerProcessor.h"
+#include "sequencer/Sequence.h"
 #include "SequencerSectionPlotter.h"
 
 

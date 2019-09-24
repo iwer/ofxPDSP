@@ -5,7 +5,7 @@
 #ifndef PDSP_OSC_DATATABLE_H_INCLUDED
 #define PDSP_OSC_DATATABLE_H_INCLUDED
 
-#include "../pdspCore.h"
+#include "DSP/pdspCore.h"
 
 namespace pdsp {
     

@@ -9,7 +9,7 @@
 #ifndef __ANDROID__
 
 #include "ofxMidi.h"
-#include "../messages/header.h"
+#include "messages/header.h"
 #include "PositionedMidiMessage.h"
 
 namespace pdsp{ namespace helper {

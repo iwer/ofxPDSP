@@ -6,8 +6,8 @@
 #ifndef OFXPDSP_PDSPCONTROLVALUE_H_INCLUDED
 #define OFXPDSP_PDSPCONTROLVALUE_H_INCLUDED
 
-#include "../DSP/pdspCore.h"
-#include "../DSP/helpers/UsesSlew.h"
+#include "DSP/pdspCore.h"
+#include "DSP/helpers/UsesSlew.h"
 
 #include "ofMain.h"
 

@@ -11,7 +11,7 @@
 #include "PositionedMidiMessage.h"
 #endif
 
-#include "../messages/header.h"
+#include "messages/header.h"
 
 namespace pdsp{ 
 
